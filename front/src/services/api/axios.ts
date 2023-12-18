@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "localhost:9000/api/v1";
+const baseURL = "localhost:8004/stocks";
 
 export const axiosInstance = axios.create({
     baseURL
