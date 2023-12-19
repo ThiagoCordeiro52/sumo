@@ -2,7 +2,7 @@ import yfinance as yf
 import uvicorn
 from fastapi import FastAPI
 
-from services import getStockInfo
+from services import getStockInfo, getSumoResume
 from services import getStockActions
 from services import getStockGrahamFormula
 from services import getStockGrahamRevisedFormula
@@ -25,6 +25,10 @@ async def getGrahamValuation(symbol):
 @app.get("/stocks/{symbol}/graham/revised")
 async def getGrahamRevisedValuation(symbol):
     return getStockGrahamRevisedFormula(symbol)
+
+@app.get("/stocks/{symbol}/sumo")
+async def getSumoInfo(symbol):
+    return getSumoResume(symbol)
 
 
 if __name__ == "__main__":
