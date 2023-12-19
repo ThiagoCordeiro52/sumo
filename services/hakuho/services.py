@@ -28,6 +28,7 @@ class SumoResume(BaseModel):
     graham_revised: float | None
     lynch_number: float | None
     lynch_result: str | None
+    bazin: float | None
     sumo_result: str
 
 def getStockInfo(symbol : str) -> dict:
@@ -68,12 +69,14 @@ def getSumoResume(symbol : str) -> SumoResume:
                     eps=float(statistics.eps),
                     share_value=float(statistics.actual_value)
                 )
+    bazin = bazinCalculator(five_years_dividend_yield=statistics.five_years_dividend_yield_avg)
     return SumoResume(
         statistics=statistics,
         graham=graham,
         graham_revised=graham_revised,
         lynch_number=lynch_number,
         lynch_result=lynchValuation(lynch_number=lynch_number),
+        bazin=bazin,
         sumo_result=sumoValuation(
             lynch_number=lynch_number, 
             lynch_result=lynchValuation(lynch_number=lynch_number),
@@ -87,7 +90,7 @@ def grahamCalculator(EPS: float, g: float, Y:float = 4.22, revised: bool = False
     C_g = 1.5 if revised else 2
     try:
         result = ((EPS * (BPE + (C_g * g)) * 4.4 ) / Y)
-        return result
+        return round(result, 2)
     except Exception:
         return None
     
@@ -96,7 +99,7 @@ def lynchCalculator(earnings_growth_rate : float | None, dividend_yield : str | 
         dividend_yield_float = float(dividend_yield)
         pe_ratio = share_value / eps
         result = ((earnings_growth_rate + dividend_yield_float) / pe_ratio)
-        return result
+        return round(result, 2)
     except Exception:
         return None
     
@@ -118,17 +121,24 @@ def lynchValuation(lynch_number : float | None) -> str:
     
         return lynchValuationDict[int_key]
 
+def bazinCalculator(five_years_dividend_yield : str | None):
+    try:
+        dividend_avg = float(five_years_dividend_yield)
+        result = dividend_avg / 0.06
+        return round(result,2)
+    except Exception:
+        return None
+
 def sumoValuation(lynch_number : float | None, lynch_result : str, graham_price : float | None, actual_price : float) -> str:
     if ( (not lynch_number) or (not graham_price) or lynch_result == "Unavailable"):
         return "Unavailable"
     
     if(lynch_result == "Overvalued"):
-        return "SELL"
+        return "VENDA"
     
     safety_margin = sumoValuationDict[lynch_result]
     actual_margin = actual_price / graham_price
     
-    print(safety_margin)
-    return f"BUY" if (actual_margin < safety_margin) else f"SELL%"
+    return f"COMPRE" if (actual_margin < safety_margin) else f"VENDA%"
 
     
