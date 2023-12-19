@@ -25,12 +25,16 @@ export function Home() {
   } = useQuery<IStatisticsAndAnalytics>({
     queryKey: ["statistic", search],
     queryFn: getStatisticsData,
+    enabled: search.trim() !== "",
   });
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSearch((event.target as HTMLInputElement).value);
-    refetch();
+    const value = (event.target as HTMLInputElement).value;
+    if (value !== "") {
+      setSearch(value);
+      refetch();
+    }
   };
 
   const searchStock = () => {
