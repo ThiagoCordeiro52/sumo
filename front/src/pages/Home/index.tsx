@@ -1,10 +1,13 @@
 import CheckIcon from "@mui/icons-material/Check";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { api } from "../../services/api/url";
 import Header from "../../components/Header";
 import { IStatisticsAndAnalytics } from "../../services/api/url/statistics/types";
+
+import Logo from "../../assets/logo.png";
 
 export function Home() {
   const [search, setSearch] = useState<string>("");
@@ -73,26 +76,32 @@ export function Home() {
                 Indicador
               </th>
               <th className="border border-slate-500" colSpan={5}>
-                Analises
+                Análises
               </th>
             </tr>
             <tr>
-              <th className="border border-slate-500">Valor atual</th>
-              <th className="border border-slate-500">Valor da empresa</th>
-              <th className="border border-slate-500">LPA (Lucro por ação)</th>
-              <th className="border border-slate-500">Beta</th>
-              <th className="border border-slate-500">
+              <th className="border border-slate-500 p-2">Valor atual</th>
+              <th className="border border-slate-500 p-2">Valor da empresa</th>
+              <th className="border border-slate-500 p-2">
+                LPA (Lucro por ação)
+              </th>
+              <th className="border border-slate-500 p-2">Beta</th>
+              <th className="border border-slate-500 p-2">
                 PSR (Preço sobre vendas)
               </th>
-              <th className="border border-slate-500">DY (Dividend Yield)</th>
-              <th className="border border-slate-500">
+              <th className="border border-slate-500 p-2">
+                DY (Dividend Yield)
+              </th>
+              <th className="border border-slate-500 p-2">
                 P/L (Preço sobre lucro)
               </th>
-              <th className="border border-slate-500">Graham</th>
-              <th className="border border-slate-500">Graham revisado</th>
-              <th className="border border-slate-500">Número de Lynch</th>
-              <th className="border border-slate-500">Resultado de Lynch</th>
-              <th className="border border-slate-500">Resultado SUMO</th>
+              <th className="border border-slate-500 p-2">Graham</th>
+              <th className="border border-slate-500 p-2">Graham revisado</th>
+              <th className="border border-slate-500 p-2">Número de Lynch</th>
+              <th className="border border-slate-500 p-2">
+                Resultado de Lynch
+              </th>
+              <th className="border border-slate-500 p-2">Resultado SUMO</th>
             </tr>
           </thead>
 
@@ -119,11 +128,13 @@ export function Home() {
 
   return (
     <div className="bg-zinc-800 text-white text-center h-screen w-screen  flex justify-center items-center flex-col">
+      <img src={Logo} width={"20%"} />
       <Header />
       {searchStock()}
       <span className="text-lg mt-6 mb-3 font-semibold font-mono">
         {stock?.statistics.name}
       </span>
+      {isLoading && <CircularProgress color="success" />}
       {!isLoading && statisticsTable()}
     </div>
   );
