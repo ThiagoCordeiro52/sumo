@@ -17,6 +17,7 @@ class StatisticsResponse(BaseModel):
     enterprise_value: str | None
     beta5: str | None
     ta_dividend_yield: str | None
+    fw_dividend_yield: str | None
 
 
 def getGrowth(symbol) -> str:    
@@ -43,6 +44,7 @@ def getStatisticsInfo(symbol) -> StatisticsResponse:
     enterprise_value = findStatisticPageSpanInfo(page=soup, string='Enterprise Value')
     beta5 = findStatisticPageSpanInfo(page=soup, string='Beta (5Y Monthly)')
     ta_dividend_yield = findStatisticPageSpanInfo(page=soup, string='Trailing Annual Dividend Yield')
+    fw_dividend_yield = findStatisticPageSpanInfo(page=soup, string='Forward Annual Dividend Yield')
 
     return StatisticsResponse(
         name=name,
@@ -52,7 +54,8 @@ def getStatisticsInfo(symbol) -> StatisticsResponse:
         trailing_pe=trailing_pe,
         enterprise_value=enterprise_value,
         beta5=beta5,
-        ta_dividend_yield=ta_dividend_yield
+        ta_dividend_yield=ta_dividend_yield,
+        fw_dividend_yield=fw_dividend_yield
     )
 
 def findStatisticPageSpanInfo(page : BeautifulSoup, string : str) -> str | None:
