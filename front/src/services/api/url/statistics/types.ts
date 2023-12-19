@@ -12,6 +12,7 @@ export interface IStatistics {
 
 export interface IStatisticsAndAnalytics {
     statistics: IStatistics;
+    bazin: number;
     graham: number;
     graham_revised: number;
     lynch_number: number;
